@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LTX 2.5 Lite Gen — Video Studio</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --panel: rgba(255,255,255,0.045);
+  --panel2: rgba(255,255,255,0.03);
+  --border: rgba(255,255,255,0.09);
+  --border2: rgba(255,255,255,0.14);
+  --txt: #e8ecf8;
+  --dim: #8b93ab;
+  --dim2: #646c85;
+  --acc1: #7c3aed;
+  --acc2: #6366f1;
+  --grad: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+  --teal: #22d3ee;
+  --amber: #fbbf24;
+  --green: #34d399;
+  --red: #f87171;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scrollbar-color: #2a3350 transparent; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(124,58,237,0.13), transparent 60%),
+    radial-gradient(900px 420px at -10% 15%, rgba(34,211,238,0.07), transparent 60%),
+    var(--bg);
+  color: var(--txt);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.wrap { max-width: 1400px; margin: 0 auto; padding: 0 20px 60px; }
+
+/* ── header ─────────────────────────────────────────────── */
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap; padding: 18px 0 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-icon {
+  width: 44px; height: 44px; border-radius: 13px;
+  background: var(--grad);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; box-shadow: 0 4px 24px rgba(124,58,237,0.45);
+  flex-shrink: 0;
+}
+.brand h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
+.brand .sub { font-size: 12px; color: var(--dim); margin-top: 2px; }
+.badges { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 5px; }
+.badge {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.35px;
+  padding: 3px 9px; border-radius: 20px; border: 1px solid var(--border2);
+  color: var(--dim); white-space: nowrap;
+}
+.badge.model { color: var(--teal); border-color: rgba(34,211,238,0.35); background: rgba(34,211,238,0.07); }
+.badge.up    { color: var(--green); border-color: rgba(52,211,153,0.35); background: rgba(52,211,153,0.07); }
+.badge.noup  { color: var(--dim2); }
+.badge.mock  { color: var(--amber); border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.07); }
+.hright { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.pill {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 11px; padding: 8px 13px; font-size: 12.5px; color: var(--dim);
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+.dot.on  { background: var(--green); box-shadow: 0 0 8px rgba(52,211,153,0.7); }
+.dot.off { background: var(--red); }
+.dot.mock { background: var(--amber); box-shadow: 0 0 8px rgba(251,191,36,0.7); }
+button.icon-btn {
+  background: var(--panel); border: 1px solid var(--border); color: var(--txt);
+  border-radius: 11px; padding: 8px 14px; font-size: 12.5px; cursor: pointer;
+  font-family: inherit; transition: all .15s;
+}
+button.icon-btn:hover { border-color: var(--border2); background: rgba(255,255,255,0.07); }
+
+/* ── banner ─────────────────────────────────────────────── */
+#banner {
+  display: none; align-items: center; justify-content: space-between; gap: 12px;
+  flex-wrap: wrap; background: rgba(251,191,36,0.08);
+  border: 1px solid rgba(251,191,36,0.3); border-radius: 13px;
+  padding: 13px 18px; margin-bottom: 18px; font-size: 13.5px;
+}
+#banner .btns { display: flex; gap: 9px; }
+.btn {
+  border: none; border-radius: 11px; padding: 10px 18px;
+  font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: inherit;
+  transition: all .15s; color: var(--txt);
+}
+.btn.secondary { background: var(--panel); border: 1px solid var(--border); font-weight: 600; }
+.btn.secondary:hover { background: rgba(255,255,255,0.08); }
+.btn.primary { background: var(--grad); box-shadow: 0 4px 18px rgba(124,58,237,0.4); }
+.btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(124,58,237,0.55); }
+.btn.primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+/* ── layout ─────────────────────────────────────────────── */
+.grid { display: grid; grid-template-columns: 5fr 7fr; gap: 20px; align-items: start; }
+@media (max-width: 1020px) { .grid { grid-template-columns: 1fr; } }
+.card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 17px; padding: 20px; backdrop-filter: blur(14px);
+}
+.card + .card { margin-top: 16px; }
+.card h3 {
+  font-size: 11.5px; font-weight: 800; letter-spacing: 1.2px;
+  color: var(--dim); text-transform: uppercase; margin-bottom: 13px;
+}
+
+/* ── tabs ───────────────────────────────────────────────── */
+.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-bottom: 16px; }
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 13px; padding: 11px 6px; cursor: pointer; color: var(--dim);
+  font-family: inherit; font-size: 11.5px; font-weight: 700; transition: all .15s;
+}
+.tab .ti { font-size: 17px; }
+.tab:hover { border-color: var(--border2); color: var(--txt); }
+.tab.active {
+  background: var(--grad); color: #fff; border-color: transparent;
+  box-shadow: 0 4px 18px rgba(124,58,237,0.4);
+}
+
+/* ── inputs ─────────────────────────────────────────────── */
+textarea, input[type="text"], input[type="number"], select {
+  width: 100%; background: rgba(0,0,0,0.28); color: var(--txt);
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px 13px; font-size: 13.5px; font-family: inherit;
+  outline: none; transition: border-color .15s;
+}
+textarea { resize: vertical; min-height: 88px; line-height: 1.55; }
+textarea:focus, input:focus, select:focus { border-color: rgba(124,58,237,0.65); }
+select option { background: #141a2e; }
+label.lbl { display: block; font-size: 11.5px; font-weight: 700; color: var(--dim);
+  text-transform: uppercase; letter-spacing: 1px; margin: 16px 0 8px; }
+label.lbl:first-child { margin-top: 0; }
+.preset-row { display: flex; gap: 7px; flex-wrap: wrap; }
+.chip {
+  background: var(--panel2); border: 1px solid var(--border); color: var(--dim);
+  border-radius: 9px; padding: 6px 11px; font-size: 11.5px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: all .15s;
+}
+.chip:hover { color: var(--txt); border-color: var(--border2); }
+.chip.sel { background: rgba(124,58,237,0.18); border-color: rgba(124,58,237,0.6); color: #c4b5fd; }
+.chip:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* dropzones */
+.drop {
+  border: 1.5px dashed var(--border2); border-radius: 13px;
+  padding: 22px 14px; text-align: center; cursor: pointer; transition: all .15s;
+  color: var(--dim); font-size: 12.5px; background: rgba(0,0,0,0.18);
+}
+.drop:hover, .drop.over { border-color: var(--acc1); background: rgba(124,58,237,0.07); }
+.drop .di { font-size: 24px; margin-bottom: 6px; }
+.preview { margin-top: 10px; display: none; }
+.preview img, .preview video { max-width: 100%; max-height: 190px; border-radius: 11px; display: block; }
+.preview audio { width: 100%; margin-top: 8px; }
+.preview .fname { font-size: 11.5px; color: var(--dim); margin-top: 6px; word-break: break-all; }
+
+/* seg control */
+.seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.seg button {
+  background: var(--panel2); border: 1px solid var(--border); color: var(--dim);
+  border-radius: 10px; padding: 9px 4px; cursor: pointer; font-family: inherit;
+  font-size: 11.5px; font-weight: 700; transition: all .15s;
+}
+.seg button:hover { color: var(--txt); }
+.seg button.active { background: rgba(124,58,237,0.18); border-color: rgba(124,58,237,0.6); color: #c4b5fd; }
+.res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 7px; margin-top: 9px; }
+.res-grid .chip { text-align: center; padding: 8px 4px; }
+.res-grid .chip small { display: block; font-weight: 500; color: var(--dim2); font-size: 10px; margin-top: 2px; }
+.custom-rc { display: none; gap: 9px; margin-top: 9px; }
+.custom-rc.show { display: flex; }
+.custom-rc input { width: 100px; }
+.snapnote { font-size: 11px; color: var(--dim2); margin-top: 7px; }
+
+/* quality */
+.q-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.q-card {
+  background: var(--panel2); border: 1px solid var(--border); border-radius: 12px;
+  padding: 11px 10px; cursor: pointer; text-align: center; transition: all .15s;
+}
+.q-card:hover { border-color: var(--border2); }
+.q-card.active { background: rgba(124,58,237,0.16); border-color: rgba(124,58,237,0.65); }
+.q-card .qt { font-size: 12.5px; font-weight: 800; }
+.q-card .qd { font-size: 10px; color: var(--dim); margin-top: 3px; }
+.q-card.active .qt { color: #c4b5fd; }
+
+/* duration */
+.row { display: flex; gap: 10px; align-items: center; }
+.row input[type="range"] { flex: 1; accent-color: var(--acc1); }
+.row select { width: 86px; }
+.dur-label { font-size: 12px; color: var(--dim); min-width: 148px; text-align: right; }
+.dur-label b { color: var(--txt); }
+.seed-row { display: flex; gap: 9px; }
+.seed-row input { flex: 1; }
+.strength-row { display: flex; align-items: center; gap: 10px; }
+.strength-row input[type="range"] { flex: 1; accent-color: var(--acc1); }
+.strength-row span { font-size: 12px; color: var(--dim); min-width: 34px; text-align: right; }
+
+#genBtn { width: 100%; margin-top: 20px; padding: 14px; font-size: 14.5px; }
+.est { text-align: center; font-size: 11.5px; color: var(--dim2); margin-top: 9px; }
+
+/* ── right column ───────────────────────────────────────── */
+.jobcard { display: none; }
+.jobcard .jh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 11px; }
+.jobcard .jm { font-size: 13px; font-weight: 700; }
+.jobcard .jt { font-size: 12px; color: var(--dim); }
+.bar { height: 9px; background: rgba(0,0,0,0.35); border-radius: 6px; overflow: hidden; }
+.bar > div {
+  height: 100%; width: 0%; border-radius: 6px;
+  background: linear-gradient(90deg, var(--acc1), var(--teal));
+  transition: width .6s ease;
+  background-size: 200% 100%;
+  animation: barshimmer 1.6s linear infinite;
+}
+@keyframes barshimmer { 0% { background-position: 0% 0; } 100% { background-position: -200% 0; } }
+.joberr { display: none; margin-top: 10px; font-size: 12px; color: var(--red);
+  background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3);
+  border-radius: 9px; padding: 9px 12px; word-break: break-all; }
+
+.gal-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 13px; }
+.gal-title { font-size: 13px; font-weight: 800; letter-spacing: 1px; color: var(--dim); display: flex; align-items: center; gap: 9px; }
+.gal-title .cnt { background: var(--grad); border-radius: 15px; padding: 2px 9px; font-size: 11px; color: #fff; }
+.gfilters { display: flex; gap: 6px; flex-wrap: wrap; }
+.gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 13px; }
+.gal-item {
+  background: var(--panel2); border: 1px solid var(--border); border-radius: 13px;
+  overflow: hidden; cursor: pointer; transition: all .15s; position: relative;
+}
+.gal-item:hover { border-color: var(--border2); transform: translateY(-2px); }
+.gal-item video { width: 100%; height: 128px; object-fit: cover; background: #000; display: block; }
+.gmeta { padding: 9px 11px 11px; }
+.gmeta .gp { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gmeta .gs { font-size: 10.5px; color: var(--dim2); margin-top: 3px; display: flex; justify-content: space-between; align-items: center; }
+.gbadge {
+  position: absolute; top: 8px; left: 8px; font-size: 9.5px; font-weight: 800;
+  letter-spacing: 0.5px; padding: 3px 8px; border-radius: 14px;
+  background: rgba(10,14,26,0.75); border: 1px solid var(--border2);
+  color: var(--teal); text-transform: uppercase; backdrop-filter: blur(6px);
+}
+.gacts { position: absolute; top: 8px; right: 8px; display: flex; gap: 5px; opacity: 0; transition: opacity .15s; }
+.gal-item:hover .gacts { opacity: 1; }
+.gacts a, .gacts button {
+  width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center;
+  justify-content: center; font-size: 12px; text-decoration: none;
+  background: rgba(10,14,26,0.8); border: 1px solid var(--border2);
+  color: var(--txt); cursor: pointer; backdrop-filter: blur(6px);
+}
+.gacts button:hover { color: var(--red); border-color: rgba(248,113,113,0.5); }
+.empty { text-align: center; color: var(--dim2); font-size: 13px; padding: 42px 10px; grid-column: 1/-1; }
+
+/* ── modal ──────────────────────────────────────────────── */
+.modal-bg {
+  display: none; position: fixed; inset: 0; background: rgba(4,7,15,0.78);
+  backdrop-filter: blur(7px); z-index: 50; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-bg.show { display: flex; }
+.modal {
+  background: #10162a; border: 1px solid var(--border2); border-radius: 17px;
+  padding: 24px; width: 100%; max-width: 480px; max-height: 92vh; overflow-y: auto;
+}
+.modal h2 { font-size: 16px; margin-bottom: 15px; }
+.modal video, .modal img { width: 100%; border-radius: 12px; max-height: 62vh; background: #000; }
+.modal .macts { display: flex; gap: 9px; margin-top: 15px; flex-wrap: wrap; }
+.conn { font-size: 12px; margin-top: 9px; color: var(--dim); }
+
+/* toast */
+#toast {
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(90px);
+  background: #141a2e; border: 1px solid var(--border2); color: var(--txt);
+  border-radius: 12px; padding: 12px 20px; font-size: 13px; z-index: 60;
+  transition: transform .25s ease; max-width: 88vw; box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
+#toast.show { transform: translateX(-50%) translateY(0); }
+#toast.err { border-color: rgba(248,113,113,0.55); }
+
+footer { margin-top: 26px; text-align: center; font-size: 11.5px; color: var(--dim2); line-height: 1.8; }
+footer a { color: var(--dim); }
+.hidden { display: none !important; }
+@media (max-width: 560px) {
+  .wrap { padding: 0 13px 44px; }
+  .card { padding: 16px; }
+  .tabs { grid-template-columns: repeat(2, 1fr); }
+  .tab { font-size: 11px; }
+  .row { flex-wrap: wrap; }
+  .dur-label { min-width: 0; }
+  .q-grid { grid-template-columns: 1fr; }
+  .seed-row { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🎬</div>
+      <div>
+        <h1>LTX 2.5 Lite Gen</h1>
+        <div class="sub">Two-Stage Distilled Video · Native Audio · ×2 Restore</div>
+        <div class="badges" id="capBadges"></div>
+      </div>
+    </div>
+    <div class="hright">
+      <div class="pill"><span class="dot" id="gpuDot"></span><span id="gpuName">connecting…</span></div>
+      <div class="pill">🧊 Queue: <b id="queueCount" style="margin-left:3px">0</b></div>
+      <button class="icon-btn" onclick="openSettings()">⚙ Endpoint</button>
+    </div>
+  </header>
+
+  <div id="banner">
+    <span>⚠ Backend not reachable — deploy the GPU backend or explore the demo.</span>
+    <div class="btns">
+      <button class="btn secondary" onclick="openSettings()">Connect backend</button>
+      <button class="btn primary" onclick="enableDemo()">Try demo mode</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- ═══ LEFT: controls ═══ -->
+    <section>
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="t2v" onclick="setTab('t2v')"><span class="ti">✍️</span>Text→Video</button>
+        <button class="tab" data-tab="i2v" onclick="setTab('i2v')"><span class="ti">🖼️</span>Image→Video</button>
+        <button class="tab" data-tab="a2v" onclick="setTab('a2v')"><span class="ti">🗣️</span>Audio→Video</button>
+        <button class="tab" data-tab="restore" onclick="setTab('restore')"><span class="ti">✨</span>Restore ×2</button>
+      </div>
+
+      <div class="card">
+        <!-- ─ T2V ─ -->
+        <div id="p-t2v">
+          <label class="lbl">Prompt</label>
+          <textarea id="prompt" placeholder="Describe the scene and motion…">A golden retriever runs along a sunny beach toward the camera, waves splashing, slow motion, cinematic lighting, shallow depth of field</textarea>
+          <label class="lbl">Presets</label>
+          <div class="preset-row" id="t2vPresets"></div>
+        </div>
+
+        <!-- ─ I2V ─ -->
+        <div id="p-i2v" class="hidden">
+          <label class="lbl">Start frame</label>
+          <div class="drop" id="dropImage" onclick="pickFile('image')">
+            <div class="di">🖼️</div>Drop an image or click to upload<br>
+            <span style="color:var(--dim2)">becomes frame 0 — the video animates it</span>
+          </div>
+          <div class="preview" id="prevImage"><img id="imgPreview"><div class="fname" id="imgName"></div></div>
+          <label class="lbl">Motion prompt</label>
+          <textarea id="i2vPrompt" placeholder="How should the scene move…">the scene comes alive, natural motion, cinematic</textarea>
+          <label class="lbl">Presets</label>
+          <div class="preset-row" id="i2vPresets"></div>
+          <label class="lbl">Start-frame strength <span style="color:var(--dim2);text-transform:none">(1.0 = keep frame exactly)</span></label>
+          <div class="strength-row"><input type="range" id="strength" min="0.1" max="1" step="0.05" value="1"><span id="strengthVal">1.00</span></div>
+        </div>
+
+        <!-- ─ A2V ─ -->
+        <div id="p-a2v" class="hidden">
+          <label class="lbl">Portrait / start frame</label>
+          <div class="drop" id="dropAimg" onclick="pickFile('aimg')">
+            <div class="di">🧑</div>Drop a portrait photo or click to upload
+          </div>
+          <div class="preview" id="prevAimg"><img id="aimgPreview"><div class="fname" id="aimgName"></div></div>
+          <label class="lbl">Speech audio <span style="color:var(--dim2);text-transform:none">(drives lip sync; video length = audio)</span></label>
+          <div class="drop" id="dropAudio" onclick="pickFile('audio')">
+            <div class="di">🎙️</div>Drop audio (wav / mp3 / m4a) or click to upload
+          </div>
+          <div class="preview" id="prevAudio"><audio id="audioPreview" controls></audio><div class="fname" id="audioName"></div></div>
+          <label class="lbl">Prompt <span style="color:var(--dim2);text-transform:none">(optional)</span></label>
+          <textarea id="a2vPrompt" style="min-height:56px" placeholder="the person speaks"></textarea>
+        </div>
+
+        <!-- ─ RESTORE ─ -->
+        <div id="p-restore" class="hidden">
+          <label class="lbl">Source video</label>
+          <div class="drop" id="dropVideo" onclick="pickFile('video')">
+            <div class="di">🎞️</div>Drop a video or click to upload<br>
+            <span style="color:var(--dim2)">lanczos → IC-LoRA ×2 pixel detailing, original audio kept</span>
+          </div>
+          <div class="preview" id="prevVideo"><video id="videoPreview" controls></video><div class="fname" id="videoName"></div></div>
+          <label class="lbl">Target resolution</label>
+          <div class="preset-row" id="restoreTargets"></div>
+          <div class="snapnote" id="restoreNote">Processed in 8k+1-frame chunks; restored chunks are stitched and the source audio track is muxed back.</div>
+        </div>
+
+        <!-- ─ COMMON (t2v/i2v/a2v) ─ -->
+        <div id="commonGen">
+          <label class="lbl">Quality / sampler schedule</label>
+          <div class="q-grid" id="qGrid">
+            <div class="q-card active" data-q="auto" onclick="setQuality('auto')">
+              <div class="qt">⚖️ Auto</div><div class="qd" id="autoDesc">by GPU</div>
+            </div>
+            <div class="q-card" data-q="fast" onclick="setQuality('fast')">
+              <div class="qt">⚡ Fast 6+2</div><div class="qd">6+2 steps · ~1.5× faster</div>
+            </div>
+            <div class="q-card" data-q="official" onclick="setQuality('official')">
+              <div class="qt">🏆 Official 8+4</div><div class="qd">8+4 steps · max quality</div>
+            </div>
+          </div>
+
+          <label class="lbl">Orientation</label>
+          <div class="seg" id="orientSeg">
+            <button data-o="wide" class="active" onclick="setOrient('wide')">🖥️ Wide</button>
+            <button data-o="vertical" onclick="setOrient('vertical')">📱 Vertical</button>
+            <button data-o="square" onclick="setOrient('square')">🔲 Square</button>
+            <button data-o="custom" onclick="setOrient('custom')">⚙️ Custom</button>
+          </div>
+          <div class="res-grid" id="resGrid"></div>
+          <div class="custom-rc" id="customRes">
+            <input type="number" id="cw" placeholder="width" min="256" max="3840" step="64">
+            <span style="color:var(--dim2)">×</span>
+            <input type="number" id="ch" placeholder="height" min="256" max="2176" step="64">
+            <span class="snapnote" id="snapNote" style="margin:0"></span>
+          </div>
+
+          <label class="lbl">Duration &amp; fps</label>
+          <div class="row">
+            <input type="range" id="duration" min="1" max="24" step="0.5" value="4" oninput="onDuration()">
+            <span class="dur-label" id="durLabel"></span>
+            <select id="fps" onchange="onDuration()">
+              <option value="24" selected>24 fps</option>
+              <option value="25">25 fps</option>
+              <option value="30">30 fps</option>
+            </select>
+          </div>
+          <div class="snapnote" id="capNote"></div>
+
+          <label class="lbl">Seed</label>
+          <div class="seed-row">
+            <input type="number" id="seed" value="-1" title="-1 = random">
+            <button class="chip" style="padding:10px 13px" onclick="document.getElementById('seed').value=Math.floor(Math.random()*999999)">🎲</button>
+          </div>
+
+          <button class="btn primary" id="genBtn" onclick="submitJob()">🎬 Generate Video</button>
+          <div class="est" id="estHint"></div>
+        </div>
+
+        <!-- ─ RESTORE submit ─ -->
+        <div id="restoreSubmit" class="hidden">
+          <label class="lbl">Options</label>
+          <div class="preset-row">
+            <span class="chip sel" id="keepAudioChip" onclick="toggleKeepAudio()">🔊 keep original audio: on</span>
+          </div>
+          <button class="btn primary" id="restoreBtn" onclick="submitRestore()" style="margin-top:16px">✨ Restore &amp; Upscale</button>
+          <div class="est" id="restoreHint">Detailing pass — roughly ⅓ of a full generation for the same clip.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ RIGHT: job + gallery ═══ -->
+    <section>
+      <div class="card jobcard" id="jobCard">
+        <div class="jh">
+          <span class="jm" id="jobTitle">Generating…</span>
+          <span class="jt" id="jobElapsed">0:00</span>
+        </div>
+        <div class="bar"><div id="jobBar"></div></div>
+        <div class="joberr" id="jobErr"></div>
+      </div>
+
+      <div class="card">
+        <div class="gal-head">
+          <div class="gal-title">📺 OUTPUTS <span class="cnt" id="galCount">0</span></div>
+          <div class="gfilters" id="galFilters">
+            <button class="chip sel" data-f="all" onclick="setFilter('all')">All</button>
+            <button class="chip" data-f="t2v" onclick="setFilter('t2v')">✍️ T2V</button>
+            <button class="chip" data-f="i2v" onclick="setFilter('i2v')">🖼️ I2V</button>
+            <button class="chip" data-f="a2v" onclick="setFilter('a2v')">🗣️ A2V</button>
+            <button class="chip" data-f="restore" onclick="setFilter('restore')">✨ Restore</button>
+          </div>
+        </div>
+        <div class="gal" id="gal"></div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    LTX-2.5 22B Distilled (NVFP4) · ComfyUI two-stage pipeline · latent ×2 upscaler + IC-LoRA detailing · native audio VAE<br>
+    <a href="https://github.com/s3rfdev/ltx25_lite_gen" target="_blank">GitHub</a> ·
+    <a href="https://huggingface.co/spaces/s3rfdev/ltx25_lite_gen" target="_blank">Hugging Face Space</a> ·
+    Apache-2.0
+  </footer>
+</div>
+
+<!-- ── settings modal ── -->
+<div class="modal-bg" id="settingsModal">
+  <div class="modal">
+    <h2>⚙ Backend endpoint</h2>
+    <input type="text" id="apiInput" placeholder="http://localhost:8000">
+    <div class="preset-row" style="margin-top:10px">
+      <button class="chip" onclick="setApiInput('')">Same origin</button>
+      <button class="chip" onclick="setApiInput('http://localhost:8000')">localhost:8000</button>
+    </div>
+    <div class="conn" id="connStatus"></div>
+    <div class="macts">
+      <button class="btn primary" onclick="saveApi()">Save</button>
+      <button class="btn secondary" onclick="closeModal('settingsModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── viewer modal ── -->
+<div class="modal-bg" id="viewModal" onclick="if(event.target===this)closeModal('viewModal')">
+  <div class="modal">
+    <video id="viewPlayer" controls style="display:none"></video>
+    <div class="macts">
+      <a class="btn primary" id="viewDownload" download>⬇ Download</a>
+      <button class="btn secondary" onclick="closeModal('viewModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+'use strict';
+/* ═══════════════════ state ═══════════════════ */
+const LS_KEY = 'ltx_api_base';
+let apiBase = localStorage.getItem(LS_KEY) || '';
+let build = null;
+let demo = false;
+let curTab = 't2v';
+let quality = 'auto';
+let orient = 'wide';
+let resPreset = '1920x1088';
+let filter = 'all';
+let keepAudio = true;
+let activeTask = null;
+let pollTimer = null, statTimer = null, jobStart = 0;
+
+const state = { image: null, aimg: null, audio: null, video: null };
+
+const PRESETS = {
+  t2v: [
+    ['🌊 Beach run', 'A golden retriever runs along a sunny beach toward the camera, waves splashing, slow motion, cinematic'],
+    ['🏙️ Neon city', 'Aerial fly-through of a rainy cyberpunk city at night, neon reflections, flying cars, blade runner atmosphere'],
+    ['🏔️ Mountain timelapse', 'Timelapse of clouds rolling over dramatic snow-capped mountain peaks at sunrise, golden light'],
+    ['🔥 Cozy café', 'Close-up of barista pouring latte art in a cozy café, warm bokeh lights, steam rising, shallow depth of field'],
+  ],
+  i2v: [
+    ['✨ Come alive', 'the scene comes alive with natural motion, gentle camera push-in, cinematic'],
+    ['🌬️ Wind & life', 'gentle wind moves through the scene, leaves and fabric flutter, birds pass by, natural ambient motion'],
+    ['🎥 Orbit shot', 'slow cinematic camera orbit around the subject, dramatic lighting, film grain'],
+    ['🌊 Water & light', 'water ripples and reflections shimmer, sunlight flickers across the scene'],
+  ],
+};
+
+const RES_PRESETS = {
+  wide: [
+    ['544p', 960, 544], ['720p', 1280, 704], ['1080p', 1920, 1088],
+    ['2K', 2496, 1408], ['4K', 3840, 2176],
+  ],
+  vertical: [
+    ['544p', 544, 960], ['720p', 704, 1280], ['1080p', 1088, 1920],
+    ['2K', 1408, 2496], ['4K', 2176, 3840],
+  ],
+  square: [
+    ['SD', 768, 768], ['HD', 1024, 1024], ['FullHD', 1280, 1280], ['2K', 1536, 1536],
+  ],
+};
+
+/* ═══════════════════ api helpers ═══════════════════ */
+function apiUrl(path) { return apiBase ? apiBase.replace(/\/$/, '') + path : path; }
+function toast(msg, err) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = err ? 'err show' : 'show';
+  clearTimeout(t._h); t._h = setTimeout(() => t.className = '', 4200);
+}
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function openSettings() {
+  document.getElementById('apiInput').value = apiBase;
+  document.getElementById('connStatus').textContent = '';
+  openModal('settingsModal');
+}
+function setApiInput(v) { document.getElementById('apiInput').value = v; }
+function saveApi() {
+  apiBase = document.getElementById('apiInput').value.trim();
+  localStorage.setItem(LS_KEY, apiBase);
+  closeModal('settingsModal');
+  demo = false;
+  connect();
+}
+
+async function connect() {
+  try {
+    const r = await fetch(apiUrl('/api/stats'), { signal: AbortSignal.timeout(4500) });
+    if (!r.ok) throw new Error('bad status');
+    const s = await r.json();
+    document.getElementById('banner').style.display = 'none';
+    updateGpu(s.gpu, s.queue_count);
+    try { build = await (await fetch(apiUrl('/api/build'))).json(); } catch (e) { build = fallbackBuild(); }
+    renderBadges(); renderResGrid(); updateAutoDesc(); updateEstimate();
+    if (s.gpu && s.gpu.available === false) {
+      setGpu('offline', false);
+    }
+    refreshGallery();
+    if (!statTimer) statTimer = setInterval(pollStats, 5000);
+  } catch (e) {
+    document.getElementById('banner').style.display = 'flex';
+    setGpu('offline', false);
+  }
+}
+
+function fallbackBuild() {
+  return {
+    build: 'ltx25-lite-gen', backend: 'unknown', model: 'LTX-2.5 22B Distilled (NVFP4)',
+    upscale_included: true, gpu_class: 'unknown', auto_quality: 'fast',
+    modes: { t2v: true, i2v: true, a2v: true, restore: true },
+    caps: { max_width: 3840, max_height: 2176, frames_lowres: 601, frames_hires: 177 },
+  };
+}
+
+function pollStats() {
+  fetch(apiUrl('/api/stats'), { signal: AbortSignal.timeout(4000) })
+    .then(r => r.json())
+    .then(s => {
+      document.getElementById('banner').style.display = 'none';
+      updateGpu(s.gpu, s.queue_count);
+    })
+    .catch(() => setGpu('offline', false));
+}
+
+function updateGpu(gpu, q) {
+  const dot = document.getElementById('gpuDot');
+  const name = document.getElementById('gpuName');
+  if (demo) { dot.className = 'dot mock'; name.textContent = 'Demo mode'; }
+  else if (gpu && gpu.available) {
+    dot.className = 'dot on';
+    name.textContent = `${gpu.name} · ${gpu.free_gb}/${gpu.total_gb} GB`;
+  } else { dot.className = 'dot off'; name.textContent = 'GPU offline'; }
+  document.getElementById('queueCount').textContent = q ?? 0;
+}
+function setGpu(txt, ok) {
+  document.getElementById('gpuDot').className = 'dot ' + (ok ? 'on' : 'off');
+  document.getElementById('gpuName').textContent = txt;
+}
+
+/* ═══════════════════ header badges ═══════════════════ */
+function renderBadges() {
+  const b = build || fallbackBuild();
+  const el = document.getElementById('capBadges');
+  const items = [];
+  items.push(`<span class="badge model">${b.model || 'LTX-2.5'}</span>`);
+  if (b.upscale_included) items.push('<span class="badge up">✨ Restore ×2 included</span>');
+  else items.push('<span class="badge noup">Upscale: not included</span>');
+  if (b.backend === 'mock') items.push('<span class="badge mock">DEMO BACKEND</span>');
+  el.innerHTML = items.join('');
+}
+function updateAutoDesc() {
+  const b = build || fallbackBuild();
+  const q = b.auto_quality === 'official' ? '→ Official 8+4 (32GB+)' : '→ Fast 6+2 (24GB)';
+  document.getElementById('autoDesc').textContent = q;
+}
+
+/* ═══════════════════ tabs ═══════════════════ */
+function setTab(t) {
+  curTab = t;
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === t));
+  ['t2v', 'i2v', 'a2v', 'restore'].forEach(m =>
+    document.getElementById('p-' + m).classList.toggle('hidden', m !== t));
+  const isRestore = t === 'restore';
+  document.getElementById('commonGen').classList.toggle('hidden', isRestore);
+  document.getElementById('restoreSubmit').classList.toggle('hidden', !isRestore);
+  onDuration(); updateEstimate();
+}
+
+/* ═══════════════════ quality ═══════════════════ */
+function setQuality(q) {
+  quality = q;
+  document.querySelectorAll('#qGrid .q-card').forEach(c => c.classList.toggle('active', c.dataset.q === q));
+  updateEstimate();
+}
+
+/* ═══════════════════ resolution ═══════════════════ */
+function setOrient(o) {
+  orient = o;
+  document.querySelectorAll('#orientSeg button').forEach(b => b.classList.toggle('active', b.dataset.o === o));
+  document.getElementById('customRes').classList.toggle('show', o === 'custom');
+  renderResGrid();
+}
+function renderResGrid() {
+  const grid = document.getElementById('resGrid');
+  if (orient === 'custom') { grid.innerHTML = ''; return; }
+  const fourKok = !build || build.gpu_class !== '24gb';
+  grid.innerHTML = RES_PRESETS[orient].map(([label, w, h]) => {
+    const is4k = Math.max(w, h) >= 3840;
+    const dis = is4k && !fourKok;
+    const sel = resPreset === w + 'x' + h;
+    return `<button class="chip ${sel ? 'sel' : ''}" ${dis ? 'disabled title="needs 32GB VRAM"' : ''}
+      onclick="pickRes('${w}x${h}')">${label}<small>${w}×${h}</small></button>`;
+  }).join('');
+  if (!grid.querySelector('.chip.sel')) {
+    resPreset = RES_PRESETS[orient][Math.min(2, RES_PRESETS[orient].length - 1)].slice(1).join('x');
+    const second = grid.children[Math.min(2, grid.children.length - 1)];
+    if (second) second.classList.add('sel');
+  }
+  onDuration();
+}
+function pickRes(key) {
+  resPreset = key;
+  document.querySelectorAll('#resGrid .chip').forEach(c => c.classList.remove('sel'));
+  event.target.closest('.chip').classList.add('sel');
+  onDuration(); updateEstimate();
+}
+function currentRes() {
+  if (orient === 'custom') {
+    const w = parseInt(document.getElementById('cw').value) || 1280;
+    const h = parseInt(document.getElementById('ch').value) || 704;
+    const sw = Math.max(256, Math.min(3840, Math.round(w / 64) * 64));
+    const sh = Math.max(256, Math.min(2176, Math.round(h / 64) * 64));
+    return [sw, sh];
+  }
+  const [label, w, h] = RES_PRESETS[orient].find(p => p.slice(1).join('x') === resPreset)
+    || RES_PRESETS[orient][2];
+  return [w, h];
+}
+
+/* ═══════════════════ duration ═══════════════════ */
+function snap8k1(n) { return Math.max(9, Math.round((n - 1) / 8) * 8 + 1); }
+function onDuration() {
+  const fps = parseFloat(document.getElementById('fps').value);
+  const dur = parseFloat(document.getElementById('duration').value);
+  const frames = snap8k1(dur * fps);
+  const [w, h] = currentRes();
+  const mp = w * h / 1e6;
+  const cap = mp > 5 ? (build?.caps?.frames_hires || 177) : (build?.caps?.frames_lowres || 601);
+  const maxDur = Math.floor(cap / fps * 2) / 2;
+  const slider = document.getElementById('duration');
+  slider.max = maxDur;
+  if (dur > maxDur) slider.value = maxDur;
+  const eff = parseFloat(slider.value);
+  document.getElementById('durLabel').innerHTML =
+    `<b>${eff.toFixed(1)}s</b> · ${snap8k1(eff * fps)} frames`;
+  const note = document.getElementById('capNote');
+  if (mp > 5) note.textContent = `>5MP target: segment cap ${cap} frames (~${(cap / fps).toFixed(1)}s per segment, auto-chained)`;
+  else note.textContent = `frames snap to the 8k+1 grid · up to ${cap} frames per segment at this resolution`;
+  updateEstimate();
+}
+
+/* ═══════════════════ estimate ═══════════════════ */
+function estimateSeconds(mode, w, h, frames, q) {
+  const mp = Math.max(0.3, w * h / 1e6);
+  let spf = 0.78 * Math.pow(mp / 2.07, 1.7);
+  if (q === 'official') spf *= 1.45;
+  if (mode === 'restore') spf *= 0.35;
+  return Math.max(25, Math.round(spf * Math.max(frames, 9)));
+}
+function updateEstimate() {
+  if (curTab === 'restore') return;
+  const effQ = quality === 'auto' ? (build?.auto_quality || 'fast') : quality;
+  const fps = parseFloat(document.getElementById('fps').value);
+  const dur = parseFloat(document.getElementById('duration').value);
+  const [w, h] = currentRes();
+  const frames = snap8k1(dur * fps);
+  const est = estimateSeconds(curTab, w, h, frames, effQ);
+  document.getElementById('estHint').textContent =
+    `≈ ${fmtTime(est)} on a 24GB node · ${w}×${h} · ${frames}f · ${effQ === 'fast' ? 'Fast 6+2' : 'Official 8+4'}`;
+}
+function fmtTime(s) {
+  if (s < 90) return s + 's';
+  return Math.floor(s / 60) + 'm ' + String(Math.round(s % 60)).padStart(2, '0') + 's';
+}
+
+/* ═══════════════════ presets & files ═══════════════════ */
+function renderPresets() {
+  for (const kind of ['t2v', 'i2v']) {
+    document.getElementById(kind + 'Presets').innerHTML = PRESETS[kind].map(
+      ([label, p]) => `<button class="chip" onclick="fillPreset('${kind}',this)" data-p="${p.replace(/"/g, '&quot;')}">${label}</button>`
+    ).join('');
+  }
+  const targets = [['×2 original', ''], ['1080p', '1920x1088'], ['2K', '2496x1408'], ['4K', '3840x2176']];
+  const fourKok = !build || build.gpu_class !== '24gb';
+  document.getElementById('restoreTargets').innerHTML = targets.map(([l, v], i) =>
+    `<button class="chip ${i === 0 ? 'sel' : ''}" ${v === '3840x2176' && !fourKok ? 'disabled title="needs 32GB VRAM"' : ''}
+      onclick="pickRestoreTarget(this,'${v}')">${l}</button>`).join('');
+}
+function fillPreset(kind, btn) {
+  const ta = document.getElementById(kind === 't2v' ? 'prompt' : 'i2vPrompt');
+  ta.value = btn.dataset.p;
+  document.querySelectorAll('#' + kind + 'Presets .chip').forEach(c => c.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+let restoreTarget = '';
+function pickRestoreTarget(btn, v) {
+  document.querySelectorAll('#restoreTargets .chip').forEach(c => c.classList.remove('sel'));
+  btn.classList.add('sel');
+  restoreTarget = v;
+}
+function toggleKeepAudio() {
+  keepAudio = !keepAudio;
+  const c = document.getElementById('keepAudioChip');
+  c.textContent = `🔊 keep original audio: ${keepAudio ? 'on' : 'off'}`;
+  c.classList.toggle('sel', keepAudio);
+}
+
+function pickFile(kind) {
+  const inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = kind === 'audio' ? 'audio/*' : (kind === 'video' ? 'video/*' : 'image/*');
+  inp.onchange = () => inp.files[0] && setFile(kind, inp.files[0]);
+  inp.click();
+}
+function setFile(kind, file) {
+  state[kind] = file;
+  const prev = document.getElementById('prev' + kind[0].toUpperCase() + kind.slice(1));
+  prev.style.display = 'block';
+  if (kind === 'image' || kind === 'aimg') {
+    const img = document.getElementById(kind === 'image' ? 'imgPreview' : 'aimgPreview');
+    img.src = URL.createObjectURL(file);
+    document.getElementById(kind === 'image' ? 'imgName' : 'aimgName').textContent = file.name;
+  } else if (kind === 'audio') {
+    const a = document.getElementById('audioPreview');
+    a.src = URL.createObjectURL(file);
+    document.getElementById('audioName').textContent = file.name;
+  } else {
+    const v = document.getElementById('videoPreview');
+    v.src = URL.createObjectURL(file);
+    document.getElementById('videoName').textContent =
+      `${file.name} · ${(file.size / 1048576).toFixed(1)} MB`;
+  }
+}
+['image', 'aimg', 'audio', 'video'].forEach(kind => {
+  const zone = document.getElementById('drop' + kind[0].toUpperCase() + kind.slice(1));
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('over');
+    if (e.dataTransfer.files[0]) setFile(kind, e.dataTransfer.files[0]);
+  });
+});
+document.getElementById('strength').addEventListener('input', function () {
+  document.getElementById('strengthVal').textContent = parseFloat(this.value).toFixed(2);
+});
+document.getElementById('cw').addEventListener('input', () => {
+  const [w, h] = currentRes();
+  document.getElementById('snapNote').textContent = `→ snapped ${w}×${h} (/64)`;
+  onDuration();
+});
+document.getElementById('ch').addEventListener('input', () => {
+  const [w, h] = currentRes();
+  document.getElementById('snapNote').textContent = `→ snapped ${w}×${h} (/64)`;
+  onDuration();
+});
+
+/* ═══════════════════ submit ═══════════════════ */
+function effQuality() { return quality === 'auto' ? (build?.auto_quality || 'fast') : quality; }
+
+async function submitJob() {
+  const mode = curTab;
+  const fps = document.getElementById('fps').value;
+  const [w, h] = currentRes();
+  const form = new FormData();
+  form.append('width', w); form.append('height', h);
+  form.append('frame_rate', fps);
+  form.append('seed', document.getElementById('seed').value || -1);
+  form.append('quality', effQuality());
+  form.append('background', 'true');
+
+  if (mode === 't2v') {
+    form.append('prompt', document.getElementById('prompt').value);
+    form.append('duration_seconds', document.getElementById('duration').value);
+  } else if (mode === 'i2v') {
+    if (!state.image) return toast('Upload a start frame first', true);
+    form.append('image_file', state.image);
+    form.append('prompt', document.getElementById('i2vPrompt').value);
+    form.append('duration_seconds', document.getElementById('duration').value);
+    form.append('image_strength', document.getElementById('strength').value);
+  } else if (mode === 'a2v') {
+    if (!state.aimg) return toast('Upload a portrait photo first', true);
+    if (!state.audio) return toast('Upload speech audio first', true);
+    form.append('image_file', state.aimg);
+    form.append('audio_file', state.audio);
+    form.append('prompt', document.getElementById('a2vPrompt').value);
+  }
+  await postJob(`/api/v1/generate/${mode}`, form, mode);
+}
+
+async function submitRestore() {
+  if (!state.video) return toast('Upload a video first', true);
+  const form = new FormData();
+  form.append('video_file', state.video);
+  if (restoreTarget) {
+    const [w, h] = restoreTarget.split('x');
+    form.append('width', w); form.append('height', h);
+  }
+  form.append('keep_audio', keepAudio);
+  form.append('background', 'true');
+  await postJob('/api/v1/generate/restore', form, 'restore');
+}
+
+async function postJob(path, form, mode) {
+  let resp;
+  try {
+    resp = await fetch(apiUrl(path), { method: 'POST', body: form });
+  } catch (e) {
+    document.getElementById('banner').style.display = 'flex';
+    return toast('Backend unreachable — connect it in ⚙ Endpoint', true);
+  }
+  if (!resp.ok) {
+    let detail = resp.status;
+    try { detail = (await resp.json()).detail || detail; } catch (e) {}
+    return toast('Submit failed: ' + detail, true);
+  }
+  const j = await resp.json();
+  if (j.status !== 'queued') return toast('Unexpected response: ' + JSON.stringify(j), true);
+  startJobUi(j.task_id, mode);
+}
+
+function startJobUi(taskId, mode) {
+  activeTask = { id: taskId, mode };
+  jobStart = Date.now();
+  document.getElementById('jobCard').style.display = 'block';
+  document.getElementById('jobErr').style.display = 'none';
+  document.getElementById('jobBar').style.width = '3%';
+  document.getElementById('jobTitle').textContent =
+    ({ t2v: '✍️ Text→Video', i2v: '🖼️ Image→Video', a2v: '🗣️ Audio→Video', restore: '✨ Restore ×2' })[mode]
+    + ' · ' + (effQuality() === 'official' ? 'Official 8+4' : 'Fast 6+2');
+  document.getElementById('jobElapsed').textContent = '0:00';
+  clearInterval(pollTimer);
+  pollTimer = setInterval(pollJob, 1000);
+  toast('Job queued 🚀');
+}
+
+async function pollJob() {
+  if (!activeTask) return;
+  const el = Math.floor((Date.now() - jobStart) / 1000);
+  document.getElementById('jobElapsed').textContent =
+    Math.floor(el / 60) + ':' + String(el % 60).padStart(2, '0');
+  let j;
+  try {
+    j = await (await fetch(apiUrl(`/api/v1/tasks/${activeTask.id}`))).json();
+  } catch (e) { return; }
+  const prog = j.progress ?? 0;
+  document.getElementById('jobBar').style.width = Math.max(3, prog) + '%';
+  if (j.status === 'completed') {
+    clearInterval(pollTimer); pollTimer = null;
+    document.getElementById('jobBar').style.width = '100%';
+    toast('Done ✅ added to outputs');
+    const t = activeTask; activeTask = null;
+    setTimeout(() => { document.getElementById('jobCard').style.display = 'none'; }, 1200);
+    refreshGallery();
+    if (!demo && t.id) openOutput(j.result_url);
+  } else if (j.status === 'failed') {
+    clearInterval(pollTimer); pollTimer = null;
+    activeTask = null;
+    const err = document.getElementById('jobErr');
+    err.style.display = 'block';
+    err.textContent = '❌ ' + (j.error_msg || 'generation failed');
+  }
+}
+function openOutput(url) {
+  if (!url) return;
+  const v = document.getElementById('viewPlayer');
+  v.src = apiUrl(url); v.style.display = 'block';
+  document.getElementById('viewDownload').href = apiUrl(url);
+  openModal('viewModal');
+  v.play().catch(() => {});
+}
+
+/* ═══════════════════ gallery ═══════════════════ */
+function setFilter(f) {
+  filter = f;
+  document.querySelectorAll('#galFilters .chip').forEach(c => c.classList.toggle('sel', c.dataset.f === f));
+  renderGallery();
+}
+async function refreshGallery() {
+  if (demo) return renderGallery(demoFiles());
+  let j;
+  try { j = await (await fetch(apiUrl('/api/v1/outputs'))).json(); }
+  catch (e) { return; }
+  renderGallery(j.files || []);
+}
+function demoFiles() {
+  const src = apiBase ? apiUrl('/static/sample_clip.mp4') : 'sample_clip.mp4';
+  return [{ name: 'demo_beach_run.mp4', url: src, mode: 't2v', size_mb: 2.1, mtime: 'demo' },
+          { name: 'demo_restore_2k.mp4', url: src, mode: 'restore', size_mb: 4.7, mtime: 'demo' }];
+}
+function renderGallery(files) {
+  files = files || [];
+  const shown = filter === 'all' ? files : files.filter(f => f.mode === filter);
+  document.getElementById('galCount').textContent = shown.length;
+  const gal = document.getElementById('gal');
+  if (!shown.length) {
+    gal.innerHTML = '<div class="empty">Nothing here yet — generate your first video 🎬</div>';
+    return;
+  }
+  gal.innerHTML = shown.map(f => `
+    <div class="gal-item" onclick="openOutput('${f.url}')">
+      <span class="gbadge">${f.mode}</span>
+      <div class="gacts">
+        <a href="${f.url.includes('http') ? f.url : apiUrl(f.url)}" download onclick="event.stopPropagation()" title="download">⬇</a>
+        <button onclick="delOutput('${f.name}','${f.url}');event.stopPropagation()" title="delete">🗑</button>
+      </div>
+      <video src="${f.url.includes('http') ? f.url : apiUrl(f.url)}" preload="metadata" muted></video>
+      <div class="gmeta">
+        <div class="gp">${f.name}</div>
+        <div class="gs"><span>${f.size_mb} MB</span><span>${(f.mtime || '').split(' ')[0]}</span></div>
+      </div>
+    </div>`).join('');
+}
+async function delOutput(name, url) {
+  if (!confirm('Delete ' + name + '?')) return;
+  if (demo) { toast('Demo file (not deletable)'); return; }
+  try {
+    const r = await fetch(apiUrl(`/api/v1/outputs/${name}`), { method: 'DELETE' });
+    if (!r.ok) throw new Error();
+    toast('Deleted');
+    refreshGallery();
+  } catch (e) { toast('Delete failed', true); }
+}
+
+/* ═══════════════════ demo mode ═══════════════════ */
+function enableDemo() {
+  demo = true;
+  build = Object.assign(fallbackBuild(), { backend: 'mock', gpu_class: '24gb', auto_quality: 'fast' });
+  renderBadges(); updateAutoDesc(); renderResGrid();
+  updateGpu(null, 0); setGpu('Demo mode', false);
+  document.getElementById('gpuDot').className = 'dot mock';
+  document.getElementById('banner').style.display = 'none';
+  refreshGallery();
+  toast('Demo mode: jobs are simulated locally');
+  // patch submit for demo
+  const origPost = postJob;
+  window.postJob = async function (path, form, mode) {
+    startJobUi('demo-' + Date.now(), mode);
+    const id = activeTask.id;
+    let p = 0;
+    const t = setInterval(() => {
+      p += 8 + Math.random() * 9;
+      if (p >= 100) {
+        clearInterval(t);
+        activeTask = null;
+        document.getElementById('jobBar').style.width = '100%';
+        document.getElementById('jobTitle').textContent = 'Done (demo)';
+        setTimeout(() => { document.getElementById('jobCard').style.display = 'none'; }, 1100);
+        refreshGallery();
+        openOutput(demoFiles()[0].url);
+      } else {
+        document.getElementById('jobBar').style.width = p + '%';
+      }
+    }, 500);
+  };
+}
+
+/* ═══════════════════ boot ═══════════════════ */
+renderPresets();
+setTab('t2v');
+onDuration();
+connect();
+</script>
+</body>
+</html>

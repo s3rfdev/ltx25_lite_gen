@@ -1,0 +1,9 @@
+# Thin on purpose: torch/ComfyUI deps live in the base docker image
+# (s3rfdev/ai-studio-backend:v7-ltx25). These are only for running the
+# API in LITEGEN_MOCK=1 mode or for ctl.py:
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+requests>=2.31.0
+python-multipart>=0.0.9
+python-dotenv>=1.0.0
+huggingface_hub>=0.21.0

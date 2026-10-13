@@ -1,0 +1,27 @@
+services:
+  ltx25-lite-gen:
+    image: s3rfdev/ltx25-lite-gen:latest
+    container_name: ltx25-lite-gen
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: "8000"
+      # REQUIRED: HuggingFace token whose user accepted the LTX-2.5 license
+      # (Lightricks repos are gated). Models (~60 GB) download on first start.
+      HF_TOKEN: ${HF_TOKEN:?set HF_TOKEN in .env}
+      # Optional tuning:
+      MODEL_DOWNLOAD: "1"          # 0 = skip model download phase
+      LTX25_COMFY_KEEP_RESIDENT: "1"  # warm models between jobs (fastest)
+      LTX25_COMFY_SPLIT_STAGES: "1"   # mandatory for 2K on 24GB nodes
+    volumes:
+      - ./data/outputs:/home/llm/s3rf/ai_studio_3/outputs
+      - ./data/models:/home/llm/s3rf   # persist the 60 GB model cache
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    shm_size: 8gb
