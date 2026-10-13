@@ -977,9 +977,10 @@ async function refreshGallery() {
   renderGallery(j.files || []);
 }
 function demoFiles() {
-  const src = apiBase ? apiUrl('/static/sample_clip.mp4') : 'sample_clip.mp4';
-  return [{ name: 'demo_beach_run.mp4', url: src, mode: 't2v', size_mb: 2.1, mtime: 'demo' },
-          { name: 'demo_restore_2k.mp4', url: src, mode: 'restore', size_mb: 4.7, mtime: 'demo' }];
+  return [
+    { name: 'bali_coast_aerial_2k.mp4', url: 'bali_coast_aerial_2k.mp4', mode: 'i2v', size_mb: 12.2, mtime: 'demo' },
+    { name: 'bali_temple_fountain_2k.mp4', url: 'bali_temple_fountain_2k.mp4', mode: 'restore', size_mb: 21.2, mtime: 'demo' },
+  ];
 }
 function renderGallery(files) {
   files = files || [];

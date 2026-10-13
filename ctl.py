@@ -260,6 +260,15 @@ def hf_push():
             )
             print("✅ Uploaded sample_clip.mp4 (demo mode)")
 
+        for mp4 in sorted((Path(__file__).parent / "docs" / "samples").glob("*.mp4")):
+            api.upload_file(
+                path_or_fileobj=str(mp4),
+                path_in_repo=mp4.name,
+                repo_id=HF_SPACE_ID,
+                repo_type="space",
+            )
+            print(f"✅ Uploaded {mp4.name} (demo gallery)")
+
         print(f"\n🎉 Hugging Face Space is live at: https://huggingface.co/spaces/{HF_SPACE_ID}\n")
     except ImportError:
         print("⚠️ 'huggingface_hub' package not installed — installing...")

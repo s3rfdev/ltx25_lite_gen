@@ -10,12 +10,14 @@
 
 ## Real results (straight from this pipeline)
 
-I2V two-stage distilled, 2560×1472 · 24 fps · native generated audio — no post-processing:
+I2V two-stage distilled, **2560×1472 · 24 fps · native generated audio** — no post-processing. Click a poster to open the player:
 
 | 🌊 Bali coast — aerial drone shot | 🛕 Bali temple — stone fountain |
 |---|---|
-| ![](docs/samples/bali_coast_aerial_2k.mp4) | ![](docs/samples/bali_temple_fountain_2k.mp4) |
-| 2560×1472 · 6.4 s · 153 frames | 2560×1472 · 8.7 s · 209 frames |
+| [![Bali coast aerial — 2K sample](docs/samples/bali_coast_poster.jpg)](https://github.com/s3rfdev/ltx25_lite_gen/blob/main/docs/samples/bali_coast_aerial_2k.mp4) | [![Bali temple fountain — 2K sample](docs/samples/bali_temple_poster.jpg)](https://github.com/s3rfdev/ltx25_lite_gen/blob/main/docs/samples/bali_temple_fountain_2k.mp4) |
+| ▶ 6.4 s · 153 frames · I2V | ▶ 8.7 s · 209 frames · I2V |
+
+Both clips are also playable inline in the [Hugging Face Space demo mode](https://huggingface.co/spaces/s3rfdev/ltx25_lite_gen).
 
 - **⚡ Two sampler schedules, hot-switchable per request** — the trimmed **Fast 6+2** (tuned on 24 GB nodes) and the **Official 8+4** two-stage distilled schedule. Auto mode picks by GPU: 24 GB → Fast, 32 GB+ → Official.
 - **✨ Restore ×2 is part of the build** — every generation already runs the latent ×2 upscaler + IC-LoRA pixel detailing pass, and a standalone **Restore** tab re-details existing videos up to 4K (lanczos guide → 2-step IC-LoRA pass → original audio muxed back).
