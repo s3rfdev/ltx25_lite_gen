@@ -8,6 +8,15 @@
 
 ![LTX 2.5 Lite Gen UI](docs/screenshots/ui_desktop_main.png)
 
+## Real results (straight from this pipeline)
+
+I2V two-stage distilled, 2560×1472 · 24 fps · native generated audio — no post-processing:
+
+| 🌊 Bali coast — aerial drone shot | 🛕 Bali temple — stone fountain |
+|---|---|
+| ![](docs/samples/bali_coast_aerial_2k.mp4) | ![](docs/samples/bali_temple_fountain_2k.mp4) |
+| 2560×1472 · 6.4 s · 153 frames | 2560×1472 · 8.7 s · 209 frames |
+
 - **⚡ Two sampler schedules, hot-switchable per request** — the trimmed **Fast 6+2** (tuned on 24 GB nodes) and the **Official 8+4** two-stage distilled schedule. Auto mode picks by GPU: 24 GB → Fast, 32 GB+ → Official.
 - **✨ Restore ×2 is part of the build** — every generation already runs the latent ×2 upscaler + IC-LoRA pixel detailing pass, and a standalone **Restore** tab re-details existing videos up to 4K (lanczos guide → 2-step IC-LoRA pass → original audio muxed back).
 - **🖼️ Any resolution from 544p to 4K** — wide / vertical / square presets plus a fully custom W×H input (snapped to the /64 grid the two-stage pipeline requires).
